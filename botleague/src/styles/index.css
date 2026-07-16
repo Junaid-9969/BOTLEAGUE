@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+/* ==================================================
+   DESIGN TOKENS — mirrors the Figma design system
+   ================================================== */
+@theme {
+  /* Backgrounds */
+  --color-background: #000000; /* Primary */
+  --color-surface: #111111; /* Secondary */
+  --color-card: #1a1a1a; /* Cards */
+  --color-border: #333333; /* Border */
+
+  /* Accents */
+  --color-accent-red: #ff4d57;
+  --color-accent-red-dim: #b23239;
+  --color-accent-blue: #2f49ff;
+  --color-accent-blue-dim: #1c2c9e;
+
+  /* Text */
+  --color-muted: #9ca3af; /* Text Secondary (gray) */
+
+  /* Typography */
+  --font-heading: "Orbitron", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Easing used across scroll-reveal + hover motion */
+  --ease-arena: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-white font-body antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading uppercase text-white;
+    letter-spacing: 0.02em;
+  }
+
+  /* Respect reduced-motion preference at the CSS level too (Framer Motion
+     is handled separately via <MotionConfig reducedMotion="user">) */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Visible keyboard focus everywhere (accessibility requirement) */
+  :focus-visible {
+    outline: 2px solid var(--color-accent-blue);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-red);
+    color: #ffffff;
+  }
+
+  /* Slim, on-brand scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-background);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-red);
+  }
+}
+
+@layer components {
+  /* Reusable faint circuit / grid backdrop used on dark sections
+     (Hero, User Journey, Sports Grid, League Advantage) */
+  .bg-circuit {
+    background-image:
+      linear-gradient(var(--color-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+    opacity: 0.35;
+  }
+
+  .text-stroke-accent {
+    -webkit-text-stroke: 1px var(--color-accent-red);
+  }
+}
